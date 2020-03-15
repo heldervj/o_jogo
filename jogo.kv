@@ -1,0 +1,68 @@
+#: kivy 1.0.9
+
+<Jogo>:
+    player: player
+    pos: self.pos
+    size: self.size
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Ball:
+    #     id: ball
+    #     center_x: self.parent.center_x
+    #     center_y: self.parent.height-self.height
+    
+    # Ball:
+    #     id: ball2
+    #     center: self.parent.width/2, self.parent.height/2 - 100
+
+    # Ball:
+    #     id: ball3
+    #     center: self.parent.width/2 + 100, self.parent.height/2
+
+    # Ball:
+    #     id: ball4
+    #     center: self.parent.width/2 - 100, self.parent.height/2
+        
+    Jogador:
+        id: player
+        x: root.x
+        center_y: root.center_y
+
+    # Caminho:
+    #     x: root.x
+    #     center_y: root.center_y
+    #     size: root.width, self.height
+    
+<Caminho>:
+    size: 1000, 40
+    canvas.before:
+        Color:
+            rgba: 0,1,1,.5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Ball>:
+    size: 20, 20
+    canvas:
+        Color:
+            rgba: 1,0,0,1
+        Ellipse:
+            pos: self.pos
+            size: self.size
+        
+<Jogador>:
+    size: 30, 30
+    canvas:
+        Color:
+            rgba: 0,0,1,1
+        Rectangle:
+            pos:self.pos
+            size:self.size
+        
