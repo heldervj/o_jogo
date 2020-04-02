@@ -25,8 +25,8 @@ from random import randint, uniform
 import pandas as pd
 import numpy as np
 from kivy.core.window import Window
-
-from modelos import posiciona_player, salva_dados
+from modelos import posiciona_player
+from utils import salva_dados
 
 class Ball(Widget):
 
@@ -42,7 +42,6 @@ class Ball(Widget):
         self.vel_x += vento
         self.center_x += self.vel_x
 
-
 class Obstaculo(Widget):
 
     tocou = False
@@ -55,8 +54,7 @@ class Obstaculo(Widget):
             bola.vel_x *= (dif_x/norm).item()
             bola.vel_y *= -(dif_y/norm).item()
             self.tocou = True
-
-        
+  
 class Jogador(Widget):
     
     player = NumericProperty(0)
@@ -89,10 +87,12 @@ class Jogo(FloatLayout):
     wins = ObjectProperty()
     jogos = ObjectProperty()
     percent = ObjectProperty()
+    start = ObjectProperty()
     obst1 = ObjectProperty()
     obst2 = ObjectProperty()
     obst3 = ObjectProperty()
     obst4 = ObjectProperty()
+    modelo_escolhido = ObjectProperty()
     bolas = []
     step_player = 10
     gravidade = 0.08
@@ -124,11 +124,12 @@ class Jogo(FloatLayout):
         elif keycode[1] == 'p':
             Clock.unschedule(self.fisica)
         elif keycode[1] == 'enter':
+            self.remove_widget(self.start)
             if not(getattr(self,'bola',None)):
                 self.inicializa_jogo()
                 
     def att_labels(self):
-        self.label_vento.text = 'Vento: {:.2f}'.format(self.vento*100)
+        self.label_vento.text = 'Vento: {:.1f}'.format(self.vento*10/0.07)
         self.wins.text = 'Wins: {}'.format(self.num_wins)
         self.jogos.text = 'Jogos: {}'.format(self.num_jogos)
         self.percent.text = 'Acertos: {:.1f}%'.format(((self.num_wins/self.num_jogos) if self.num_jogos != 0 else 0)*100)
@@ -138,7 +139,7 @@ class Jogo(FloatLayout):
         self.bola = Ball(center_x=randint(50,800), center_y=self.height)
         self.add_widget(self.bola)
         self.infos = [i for i in [self.bola.x, self.vento, self.gravidade, self.height]]
-        self.player.center_x = posiciona_player(self.bola.x, self.vento, self.gravidade, self.height)
+        self.player.center_x = posiciona_player(self.modelo_escolhido.state, self.bola.x, self.vento, self.gravidade, self.height)
         self.att_labels()
 
     def fisica(self, dt):
@@ -155,7 +156,7 @@ class Jogo(FloatLayout):
             if self.player.flag_win:
                 self.num_wins += 1
                 self.player.flag_win = False
-#            Clock.unschedule(self.fisica)
+            Clock.unschedule(self.fisica)
             self.remove_widget(self.bola)
             self.inicializa_jogo()
             self.obst1.tocou = False

@@ -2,6 +2,7 @@
 
 <Jogo>:
     player: player
+    start: start
     wins: wins
     percent: percent
     jogos: jogos
@@ -10,6 +11,7 @@
     obst2: obst2
     obst3: obst3
     obst4: obst4
+    modelo_escolhido: modelo_escolhido
 
     canvas.before:
         Color:
@@ -17,25 +19,31 @@
         Rectangle:
             pos: self.pos
             size: self.size
+    
+    CustomLabel:
+        id: start
+        pos_hint: {'x': 0.5,'top': 0.6}
+        font_size: 70
+        text: 'PRESSIONE ENTER PARA INICIAR'
 
     CustomLabel:
         id: jogos
-        pos_hint: {'x': 0.8,'top': 1}
+        pos_hint: {'x': 0.8,'top': 0.98}
         text: 'Jogos: {}'.format(root.num_jogos)
       
     CustomLabel:
         id: wins
-        pos_hint: {'x': 0.8,'top': 0.95}
+        pos_hint: {'x': 0.8,'top': 0.93}
         text: 'Wins: {}'.format(root.num_wins)
 
     CustomLabel:
         id: percent
-        pos_hint: {'x': 0.9,'top': 0.975}
+        pos_hint: {'x': 0.9,'top': 0.973}
         text: 'Acertos: {}%'.format(((root.num_wins/root.num_jogos) if root.num_jogos != 0 else 0)*100)
 
     CustomLabel:
         id: label_vento
-        pos_hint: {'x': 0.7,'top': 0.975}
+        pos_hint: {'x': 0.7,'top': 0.973}
         text: 'Vento: {}'.format(root.vento)
     
     
@@ -67,6 +75,24 @@
         id: obst4
         center_x: root.width/3.2
         center_y: root.height/1.1
+
+    ToggleButton:
+        id: modelo_escolhido
+        pos_hint: {'right': 1,'top': 1}
+        size_hint: 0.08, 0.05
+        text: 'Modelo Classico'
+        group: 'modelos'
+        state: 'down'
+
+
+    ToggleButton:
+        id: rede_neural
+        text: 'Rede Neural'
+        pos_hint: {'right': 1-modelo_escolhido.width/root.width,'top': 1}
+        size_hint: 0.08, 0.05
+        group: 'modelos'
+
+    
 
     
 
